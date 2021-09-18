@@ -1,0 +1,32 @@
+body {
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
+  background-color: lightseagreen;
+}
+body {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  width: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 30%;
+  margin: 0%;
+  cursor: pointer;
+}
+
+th {
+  background-color: greenyellow;
+}
+
+td,
+th {
+  border: 1px solid blue;
+  text-align: left;
+  padding: 8px;
+  /* background-color: violet; */
+}
+
+td {
+  background-color: rgb(219, 75, 75);
+}
