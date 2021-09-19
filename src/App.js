@@ -22,12 +22,115 @@ function App() {
   const [careergap, setCareerGap] = useState("");
   const [month, setMonth] = useState("");
   const [yearofdegree, setYearofDegree] = useState("");
+  
+//States for front-end checked
+const [checkReact, setCheckReact] = useState(false);
+const [checkCss, setCheckCss] = useState(false);
+const [checkBootstrap, setCheckBootstrap] = useState(false);
+const [checkHtml, setCheckHtml] = useState(false);
+const [checkJs, setCheckJs] = useState(false);
 
-  async function collectData() {
+////States for back-end checked
+const [checkPython,setCheckPython] = useState(false)
+
+//States for input dates 
+
+const [fromDate,setFromDate]= useState("")
+const [toDate,setToDate]= useState("")
+
+
+
+//State for  percent skills total matching
+const [percentSkill , setPercentSkill] = useState(0)
+
+
+
+
+function collectData() {
+debugger
+//Total Sum Skill matching calc --STARTS
+    let totalSum=0
+    let percentSkillMatching = 0
+    
+    if(jobapplied =="Front-End"){
+    
+      if(checkReact==true){
+        totalSum++
+      }
+      if(checkCss==true){
+        totalSum++
+      }
+      if(checkBootstrap==true){
+        totalSum++
+      }
+      if(checkHtml==true){
+        totalSum++
+      }
+      if(checkJs==true){
+        totalSum++
+      }
+    
+       
+      percentSkillMatching = (totalSum / 5)*100
+    
+    
+    }else if(jobapplied == "Back-End"){
+      if(checkPython==true){
+        totalSum++
+      }
+    
+    
+    
+    
+    
+      percentSkillMatching = (totalSum / 4)*100
+    
+    }else if(jobapplied == "Full-Stack"){
+    
+    
+    
+    
+      percentSkillMatching = (totalSum / 9)*100
+    }else{
+    
+    
+    
+    
+      percentSkillMatching = (totalSum / 1)*100
+    }
+     
+    
+    setPercentSkill(percentSkillMatching)
+    
+//Total Sum Skill matching calc --ENDS
+
+
+
+
+//Days calculator starts --STARTS
+    
+    
+    var getDaysLeft = function (date1, date2) {
+      var daysDiffInMilliSec = Math.abs(new Date(date1) - new Date(date2));
+      var daysLeft = daysDiffInMilliSec / (1000 * 60 * 60 * 24);   
+      return daysLeft;
+    };
+    var dateDiff = getDaysLeft(fromDate, toDate); // pass your from date and to date states here
+    console.log(dateDiff);
+
+//Days calculator starts --ENDS
+
+
+
+//sending the object to DB ---STARTS
+
     let Data = {
       CandidateName: name,
       Category: category,
       Dob: dob,
+      FromDate :fromDate,
+      ToDate : toDate,
+      PercentSkills : percentSkill,
       Qualification: qualification,
       Branch: branch,
       yearofpass: yearofpass,
@@ -43,8 +146,18 @@ function App() {
       yearofDegree: yearofdegree
     };
     // cloud.collection("resumes").add(Data);
-    const addData = await setDoc(doc(db, "resumes", "1"), Data);
+    async function sendData(){
+let name= `2021${contactno}${yearofdegree}`
+      const addData = await  setDoc(doc(db, "resumes", "2" ), Data);
 
+    }
+    sendData()
+
+
+//sending the object to DB ---ENDS
+
+
+//ALl logics end ---------------
   }
 
   return (
@@ -183,65 +296,113 @@ function App() {
 
               <p>What are the Skills You have Right now ?</p>
       {jobapplied == "Front-End" ? (
-  <><div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  />
-          <label class="form-check-label" for="flexCheckDefault">
-            React
+  <><div class="form-check1">
+          <input  type="checkbox" onChange={(e)=>{setCheckReact(e.target.checked)}} value=""   />
+          <label  >
+            REACT
           </label>
-
-        </div><div>
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-            <label class="form-check-label" for="flexCheckDefault">
+          </div><div class="form-check">
+          <input  type="checkbox" onChange={(e)=>{setCheckCss(e.target.checked)}} value=""  />
+          <label  >
+            CSS
+          </label>
+          </div><div class="form-check">
+          <input  type="checkbox" onChange={(e)=>{setCheckBootstrap(e.target.checked)}} value=""   />
+          <label  >
+            BOOTSTRAP
+          </label>
+          </div><div>
+            <input  type="checkbox" value="" onChange={(e)=>{setCheckHtml(e.target.checked)}}  />
+            <label class="form-check-label" >
               HTML
             </label>
+          </div><div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" onChange={(e)=>{setCheckJs(e.target.checked)}}   />
+          <label class="form-check-label" for="flexCheckDefault">
+            JAVASCRIPT
+          </label>
           </div></>
 ) : jobapplied == "Back-End" ? (
 
-  <><div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  />
+  <><div class="form-check2">
+  <input class="form-check-input" type="checkbox" value="" onChange={(e)=>{setCheckPython(e.target.checked)}}  />
   <label class="form-check-label" for="flexCheckDefault">
-    Python
+    PYTHON
   </label>
 
 </div><div>
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+    <input  type="checkbox" value=""  />
     <label class="form-check-label" for="flexCheckDefault">
-     Java
+     JAVA
+    </label>
+  </div><div>
+    <input  type="checkbox" value=""  />
+    <label class="form-check-label" for="flexCheckDefault">
+     REACT
+    </label>
+  </div><div>
+    <input  type="checkbox" value=""  />
+    <label class="form-check-label" for="flexCheckDefault">
+     ANGULAR
     </label>
   </div></>
 ) : jobapplied == "Full-Stack" ? (
 
   <><div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  />
+  <input class="form-check-input" type="checkbox" value=""   />
   <label class="form-check-label" for="flexCheckDefault">
-    Python
+    PYTHON
   </label>
 
 </div><div>
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+    <input class="form-check-input" type="checkbox" value=""  />
     <label class="form-check-label" for="flexCheckDefault">
-     Java
+     JAVA
     </label>
   </div>
   <div>
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+    <input class="form-check-input" type="checkbox" value=""  />
     <label class="form-check-label" for="flexCheckDefault">
-     React
+     ANGULAR
+    </label>
+  </div>
+  <div>
+    <input class="form-check-input" type="checkbox" value=""  />
+    <label class="form-check-label" for="flexCheckDefault">
+     HTML
+    </label>
+  </div>
+  <div>
+    <input class="form-check-input" type="checkbox" value=""  />
+    <label class="form-check-label" for="flexCheckDefault">
+     CSS
+    </label>
+  </div>
+  <div>
+    <input class="form-check-input" type="checkbox" value=""  />
+    <label class="form-check-label" for="flexCheckDefault">
+     REACT
     </label>
   </div></>
 ) : jobapplied == "Foreign-Placement" ? (
 <div>
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+    <input class="form-check-input" type="checkbox" value=""  />
     <label class="form-check-label" for="flexCheckDefault">
-     Data-Entry
+     DATA-ENTRY
     </label>
   </div>
 
 ) : (<p>Nothing selected</p>)}
 
-
 <p>Approximate Salary You Will Get !!</p>
 {jobapplied == "Front-End" ? (<p>Rs.30,000</p>) : jobapplied == "Back-End" ? (<p>Rs.35,000</p>) : jobapplied == "Full-Stack" ? (<p>Rs.50,000</p>) : jobapplied == "Foreign-Placement" ? (<p>Rs.1,00,000</p>) : (<p>Nothing selected</p>)}
+
+{/* {jobapplied =="Front-End" ? (<p>{}</p>)} */}
+
+
+
+
+
 
 <div class="form-row">
         <div class="col-md-6 mb-6">
@@ -267,6 +428,9 @@ function App() {
 
 
 {jobapplied == "Front-End" ? (<p>{((30000-candidateexpectationctc)/30000)*100}%</p>) : (<p></p>)}
+{jobapplied == "Back-End" ? (<p>{((35000-candidateexpectationctc)/35000)*100}%</p>) : (<p></p>)}
+{jobapplied == "Full-Stack" ? (<p>{((50000-candidateexpectationctc)/50000)*100}%</p>) : (<p></p>)}
+{jobapplied == "Foreign-Placement" ? (<p>{((100000-candidateexpectationctc)/100000)*100}%</p>) : (<p></p>)}
 
 
 
@@ -290,9 +454,10 @@ function App() {
   </label>
 </div>
 <p>Starting Date of Job</p>
-<input type="date" />
+<input type="date" onChange={(e)=>{ 
+  setFromDate(e.target.value)}} />
 <p>Ending Date of Job</p>
-<input type="date" />
+<input type="date" onChange={(e)=>{setToDate(e.target.value)}}/>
 
       
       <div class="form-row">
